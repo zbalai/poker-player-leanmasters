@@ -70,7 +70,7 @@ namespace Nancy.Simple
                 }
                 if (handScore > 15)
                 {
-                    if ((int)gameState["current_buy_in"]< (ownStack / 3))
+                    if ((int)gameState["current_buy_in"] < (ownStack / 3))
                     {
                         return (int)gameState["current_buy_in"];
                     }
@@ -89,7 +89,7 @@ namespace Nancy.Simple
             }
             else
             {
-                if ((int)gameState["current_buy_in"] > (ownStack / 12))
+                if ((int)gameState["current_buy_in"] > (ownStack / 8))
                 {
                     return 0;
                 }
