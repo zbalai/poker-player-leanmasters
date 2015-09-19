@@ -8,7 +8,14 @@ namespace Nancy.Simple
 
 		public static int BetRequest(JObject gameState)
 		{
-            return (int)gameState["current_buy_in"]; // + (int)gameState["minimum_raise"];
+            if ((int)gameState["current_buy_in"] > 100)
+            {
+                return 0;
+            }
+            else
+            {
+                return (int)gameState["current_buy_in"]; // + (int)gameState["minimum_raise"];
+            }
             //TODO: Use this method to return the value You want to bet
 
             //return 10000;
