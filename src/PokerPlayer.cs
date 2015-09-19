@@ -9,6 +9,8 @@ namespace Nancy.Simple
 
         public static int BetRequest(JObject gameState)
         {
+            return 10000;
+
             bool hasPair = false;
             int ownCardRankSum = 0;
             int pairRank = 0;
