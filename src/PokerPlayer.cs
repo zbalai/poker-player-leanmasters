@@ -43,7 +43,12 @@ namespace Nancy.Simple
                     }
                 }
             }
+
+            int handScore = GetHandScore(firstCard, secondCard);
+            
+
             int raisingCards = 0;
+            bool CommunityCardsOut = false;
             foreach (var comCard in gameState["community_cards"])
             {
                 if (comCard["rank"].ToString() == firstCard
@@ -51,21 +56,40 @@ namespace Nancy.Simple
                 {
                     raisingCards++;
                 }
+                CommunityCardsOut = true;
             }
+            System.Console.WriteLine("testRunning " + handScore.ToString());
+
             //System.Console.WriteLine(testj["players"]);
 
-            if (hasPair && pairRank >= 5 || raisingCards > 1)
+            if (CommunityCardsOut)
+            {
+                if(handScore > 66)
+                {
+                    return 10000; // + (int)gameState["minimum_raise"];
+                }
+                if (handScore > 15)
+                {
+                    if ((int)gameState["current_buy_in"]< (ownStack / 3))
+                    {
+                        return (int)gameState["current_buy_in"];
+                    }
+                }
+            }
+
+            // TODO: raisingcards reevaluate
+            if (hasPair && pairRank >= 6 || raisingCards > 1)
             {
                 return 10000; // + (int)gameState["minimum_raise"];
             }
             else
-            if (hasPair || ownCardRankSum > 20 || ((raisingCards > 0) && ownCardRankSum > 14))
+            if (hasPair || ownCardRankSum > 20 || ((raisingCards > 0) && ownCardRankSum > 13))
             {
                 return (int)gameState["current_buy_in"];
             }
             else
             {
-                if ((int)gameState["current_buy_in"] > (ownStack / 10))
+                if ((int)gameState["current_buy_in"] > (ownStack / 12))
                 {
                     return 0;
                 }
@@ -114,6 +138,194 @@ namespace Nancy.Simple
         public static void ShowDown(JObject gameState)
         {
             //TODO: Use this method to showdown
+        }
+
+        private static int GetHandScore(string card1, string card2)
+        {
+            //1st card: 2
+            if (card1 == "2" && card2 == "2") return 24;
+            if (card1 == "2" && card2 == "3") return 1;
+            if (card1 == "2" && card2 == "4") return 1;
+            if (card1 == "2" && card2 == "5") return 1;
+            if (card1 == "2" && card2 == "6") return 1;
+            if (card1 == "2" && card2 == "7") return 1;
+            if (card1 == "2" && card2 == "8") return 1;
+            if (card1 == "2" && card2 == "9") return 2;
+            if (card1 == "2" && card2 == "10") return 2;
+            if (card1 == "2" && card2 == "J") return 3;
+            if (card1 == "2" && card2 == "Q") return 6;
+            if (card1 == "2" && card2 == "K") return 10;
+            if (card1 == "2" && card2 == "A") return 23;
+            //1st card: 3
+            if (card1 == "3" && card2 == "2") return 1;
+            if (card1 == "3" && card2 == "3") return 33;
+            if (card1 == "3" && card2 == "4") return 1;
+            if (card1 == "3" && card2 == "5") return 1;
+            if (card1 == "3" && card2 == "6") return 1;
+            if (card1 == "3" && card2 == "7") return 2;
+            if (card1 == "3" && card2 == "8") return 2;
+            if (card1 == "3" && card2 == "9") return 2;
+            if (card1 == "3" && card2 == "10") return 3;
+            if (card1 == "3" && card2 == "J") return 4;
+            if (card1 == "3" && card2 == "Q") return 6;
+            if (card1 == "3" && card2 == "K") return 11;
+            if (card1 == "3" && card2 == "A") return 24;
+            //1st card: 4
+            if (card1 == "4" && card2 == "2") return 1;
+            if (card1 == "4" && card2 == "3") return 2;
+            if (card1 == "4" && card2 == "4") return 41;
+            if (card1 == "4" && card2 == "5") return 2;
+            if (card1 == "4" && card2 == "6") return 2;
+            if (card1 == "4" && card2 == "7") return 2;
+            if (card1 == "4" && card2 == "8") return 2;
+            if (card1 == "4" && card2 == "9") return 2;
+            if (card1 == "4" && card2 == "10") return 3;
+            if (card1 == "4" && card2 == "J") return 5;
+            if (card1 == "4" && card2 == "Q") return 7;
+            if (card1 == "4" && card2 == "K") return 11;
+            if (card1 == "4" && card2 == "A") return 26;
+            //1st card: 5
+            if (card1 == "5" && card2 == "2") return 2;
+            if (card1 == "5" && card2 == "3") return 2;
+            if (card1 == "5" && card2 == "4") return 2;
+            if (card1 == "5" && card2 == "5") return 49;
+            if (card1 == "5" && card2 == "6") return 2;
+            if (card1 == "5" && card2 == "7") return 2;
+            if (card1 == "5" && card2 == "8") return 2;
+            if (card1 == "5" && card2 == "9") return 3;
+            if (card1 == "5" && card2 == "10") return 4;
+            if (card1 == "5" && card2 == "J") return 5;
+            if (card1 == "5" && card2 == "Q") return 8;
+            if (card1 == "5" && card2 == "K") return 12;
+            if (card1 == "5" && card2 == "A") return 28;
+            //1st card: 6
+            if (card1 == "6" && card2 == "2") return 2;
+            if (card1 == "6" && card2 == "3") return 2;
+            if (card1 == "6" && card2 == "4") return 2;
+            if (card1 == "6" && card2 == "5") return 3;
+            if (card1 == "6" && card2 == "6") return 48;
+            if (card1 == "6" && card2 == "7") return 3;
+            if (card1 == "6" && card2 == "8") return 3;
+            if (card1 == "6" && card2 == "9") return 4;
+            if (card1 == "6" && card2 == "10") return 4;
+            if (card1 == "6" && card2 == "J") return 5;
+            if (card1 == "6" && card2 == "Q") return 8;
+            if (card1 == "6" && card2 == "K") return 13;
+            if (card1 == "6" && card2 == "A") return 28;
+            //1st card: 7
+            if (card1 == "7" && card2 == "2") return 2;
+            if (card1 == "7" && card2 == "3") return 2;
+            if (card1 == "7" && card2 == "4") return 3;
+            if (card1 == "7" && card2 == "5") return 3;
+            if (card1 == "7" && card2 == "6") return 4;
+            if (card1 == "7" && card2 == "7") return 67;
+            if (card1 == "7" && card2 == "8") return 4;
+            if (card1 == "7" && card2 == "9") return 4;
+            if (card1 == "7" && card2 == "10") return 5;
+            if (card1 == "7" && card2 == "J") return 6;
+            if (card1 == "7" && card2 == "Q") return 9;
+            if (card1 == "7" && card2 == "K") return 14;
+            if (card1 == "7" && card2 == "A") return 31;
+            //1st card: 8
+            if (card1 == "8" && card2 == "2") return 2;
+            if (card1 == "8" && card2 == "3") return 2;
+            if (card1 == "8" && card2 == "4") return 3;
+            if (card1 == "8" && card2 == "5") return 4;
+            if (card1 == "8" && card2 == "6") return 5;
+            if (card1 == "8" && card2 == "7") return 6;
+            if (card1 == "8" && card2 == "8") return 80;
+            if (card1 == "8" && card2 == "9") return 5;
+            if (card1 == "8" && card2 == "10") return 6;
+            if (card1 == "8" && card2 == "J") return 7;
+            if (card1 == "8" && card2 == "Q") return 10;
+            if (card1 == "8" && card2 == "K") return 15;
+            if (card1 == "8" && card2 == "A") return 36;
+            //1st card: 9
+            if (card1 == "9" && card2 == "2") return 3;
+            if (card1 == "9" && card2 == "3") return 3;
+            if (card1 == "9" && card2 == "4") return 3;
+            if (card1 == "9" && card2 == "5") return 4;
+            if (card1 == "9" && card2 == "6") return 5;
+            if (card1 == "9" && card2 == "7") return 6;
+            if (card1 == "9" && card2 == "8") return 8;
+            if (card1 == "9" && card2 == "9") return 96;
+            if (card1 == "9" && card2 == "10") return 7;
+            if (card1 == "9" && card2 == "J") return 9;
+            if (card1 == "9" && card2 == "Q") return 12;
+            if (card1 == "9" && card2 == "K") return 18;
+            if (card1 == "9" && card2 == "A") return 41;
+            //1st card: 10
+            if (card1 == "10" && card2 == "2") return 4;
+            if (card1 == "10" && card2 == "3") return 4;
+            if (card1 == "10" && card2 == "4") return 5;
+            if (card1 == "10" && card2 == "5") return 5;
+            if (card1 == "10" && card2 == "6") return 6;
+            if (card1 == "10" && card2 == "7") return 7;
+            if (card1 == "10" && card2 == "8") return 9;
+            if (card1 == "10" && card2 == "9") return 11;
+            if (card1 == "10" && card2 == "10") return 120;
+            if (card1 == "10" && card2 == "J") return 12;
+            if (card1 == "10" && card2 == "Q") return 15;
+            if (card1 == "10" && card2 == "K") return 23;
+            if (card1 == "10" && card2 == "A") return 53;
+            //1st card: J
+            if (card1 == "J" && card2 == "2") return 6;
+            if (card1 == "J" && card2 == "3") return 6;
+            if (card1 == "J" && card2 == "4") return 7;
+            if (card1 == "J" && card2 == "5") return 7;
+            if (card1 == "J" && card2 == "6") return 7;
+            if (card1 == "J" && card2 == "7") return 9;
+            if (card1 == "J" && card2 == "8") return 10;
+            if (card1 == "J" && card2 == "9") return 13;
+            if (card1 == "J" && card2 == "10") return 18;
+            if (card1 == "J" && card2 == "J") return 160;
+            if (card1 == "J" && card2 == "Q") return 16;
+            if (card1 == "J" && card2 == "K") return 25;
+            if (card1 == "J" && card2 == "A") return 68;
+            //1st card: Q
+            if (card1 == "Q" && card2 == "2") return 8;
+            if (card1 == "Q" && card2 == "3") return 9;
+            if (card1 == "Q" && card2 == "4") return 10;
+            if (card1 == "Q" && card2 == "5") return 10;
+            if (card1 == "Q" && card2 == "6") return 11;
+            if (card1 == "Q" && card2 == "7") return 11;
+            if (card1 == "Q" && card2 == "8") return 13;
+            if (card1 == "Q" && card2 == "9") return 16;
+            if (card1 == "Q" && card2 == "10") return 22;
+            if (card1 == "Q" && card2 == "J") return 25;
+            if (card1 == "Q" && card2 == "Q") return 239;
+            if (card1 == "Q" && card2 == "K") return 29;
+            if (card1 == "Q" && card2 == "A") return 96;
+            //1st card: K
+            if (card1 == "K" && card2 == "2") return 13;
+            if (card1 == "K" && card2 == "3") return 14;
+            if (card1 == "K" && card2 == "4") return 15;
+            if (card1 == "K" && card2 == "5") return 16;
+            if (card1 == "K" && card2 == "6") return 17;
+            if (card1 == "K" && card2 == "7") return 19;
+            if (card1 == "K" && card2 == "8") return 20;
+            if (card1 == "K" && card2 == "9") return 24;
+            if (card1 == "K" && card2 == "10") return 31;
+            if (card1 == "K" && card2 == "J") return 36;
+            if (card1 == "K" && card2 == "Q") return 43;
+            if (card1 == "K" && card2 == "K") return 477;
+            if (card1 == "K" && card2 == "A") return 166;
+            //1st card: A
+            if (card1 == "A" && card2 == "2") return 29;
+            if (card1 == "A" && card2 == "3") return 31;
+            if (card1 == "A" && card2 == "4") return 33;
+            if (card1 == "A" && card2 == "5") return 36;
+            if (card1 == "A" && card2 == "6") return 35;
+            if (card1 == "A" && card2 == "7") return 40;
+            if (card1 == "A" && card2 == "8") return 45;
+            if (card1 == "A" && card2 == "9") return 52;
+            if (card1 == "A" && card2 == "10") return 70;
+            if (card1 == "A" && card2 == "J") return 92;
+            if (card1 == "A" && card2 == "Q") return 137;
+            if (card1 == "A" && card2 == "K") return 277;
+            if (card1 == "A" && card2 == "A") return 500;
+
+            return 0;
         }
     }
 }
