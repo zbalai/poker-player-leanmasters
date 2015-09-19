@@ -66,13 +66,14 @@ namespace Nancy.Simple
             {
                 if(handScore > 66)
                 {
-                    return 10000; // + (int)gameState["minimum_raise"];
+                    //return 10000; // + (int)gameState["minimum_raise"];
+                    return (int)gameState["current_buy_in"] + ownStack / 10;
                 }
                 if (handScore > 15)
                 {
                     if ((int)gameState["current_buy_in"] < (ownStack / 3))
                     {
-                        return (int)gameState["current_buy_in"];
+                        return (int)gameState["current_buy_in"] + (int)gameState["minimum_raise"];
                     }
                 }
             }
@@ -80,7 +81,8 @@ namespace Nancy.Simple
             // TODO: raisingcards reevaluate
             if (hasPair && pairRank >= 6 || raisingCards > 1)
             {
-                return 10000; // + (int)gameState["minimum_raise"];
+                //return 10000; // + (int)gameState["minimum_raise"];
+                return (int)gameState["current_buy_in"] + ownStack / 10;
             }
             else
             if (hasPair || ownCardRankSum > 20 || ((raisingCards > 0) && ownCardRankSum > 13))
