@@ -10,6 +10,7 @@ namespace Nancy.Simple
         public static int BetRequest(JObject gameState)
         {
             bool hasPair = false;
+            int ownCardRankSum = 0;
             int pairRank = 0;
             int myIndex = (int)gameState["in_action"];
             foreach (var x in gameState["players"])
@@ -21,6 +22,7 @@ namespace Nancy.Simple
                     string firstCard = "";
                     foreach (var card in x["hole_cards"])
                     {
+                        ownCardRankSum += getCard(card["rank"].ToString());
                         if (firstCard == "")
                         {
                             firstCard = card["rank"].ToString();
@@ -31,7 +33,7 @@ namespace Nancy.Simple
                             {
                                 hasPair = true;
                                 pairRank = getCard(card["rank"].ToString());
-                                //System.Console.WriteLine("haspair");
+                                System.Console.WriteLine("haspair");
                             }
                         }
                         /*System.Console.WriteLine(card["rank"]);
@@ -49,7 +51,7 @@ namespace Nancy.Simple
                 return 10000; // + (int)gameState["minimum_raise"];
             }
             else
-            if (hasPair)
+            if (hasPair || ownCardRankSum > 22)
             {
                 return (int)gameState["current_buy_in"];
             }
