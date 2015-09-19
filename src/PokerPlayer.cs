@@ -46,12 +46,12 @@ namespace Nancy.Simple
             }
             //System.Console.WriteLine(testj["players"]);
 
-            if (hasPair && pairRank >= 8)
+            if (hasPair && pairRank >= 6)
             {
                 return 10000; // + (int)gameState["minimum_raise"];
             }
             else
-            if (hasPair || ownCardRankSum > 22)
+            if (hasPair || ownCardRankSum > 20)
             {
                 return (int)gameState["current_buy_in"];
             }
