@@ -13,13 +13,16 @@ namespace Nancy.Simple
             int ownCardRankSum = 0;
             int pairRank = 0;
             int myIndex = (int)gameState["in_action"];
+            int ownStack = 0;
+            string firstCard = "";
+            string secondCard = "";
             foreach (var x in gameState["players"])
             {
                 if ((int)x["id"] == myIndex)
                 {
                     /*System.Console.WriteLine("***");
                     System.Console.WriteLine(x);*/
-                    string firstCard = "";
+                    ownStack = int.Parse(x["stack"].ToString());
                     foreach (var card in x["hole_cards"])
                     {
                         ownCardRankSum += getCard(card["rank"].ToString());
@@ -29,35 +32,40 @@ namespace Nancy.Simple
                         }
                         else
                         {
-                            if (firstCard == card["rank"].ToString())
+                            secondCard = card["rank"].ToString();
+                            if (firstCard == secondCard)
                             {
                                 hasPair = true;
                                 pairRank = getCard(card["rank"].ToString());
                                 System.Console.WriteLine("haspair");
                             }
                         }
-                        /*System.Console.WriteLine(card["rank"]);
-                        if(card["rank"].ToString()=="K")
-                        {
-                            System.Console.WriteLine("KING");
-                        }*/
                     }
+                }
+            }
+            int raisingCards = 0;
+            foreach (var comCard in gameState["community_cards"])
+            {
+                if (comCard["rank"].ToString() == firstCard
+                    || comCard["rank"].ToString() == secondCard)
+                {
+                    raisingCards++;
                 }
             }
             //System.Console.WriteLine(testj["players"]);
 
-            if (hasPair && pairRank >= 6)
+            if (hasPair && pairRank >= 5 || raisingCards > 1)
             {
                 return 10000; // + (int)gameState["minimum_raise"];
             }
             else
-            if (hasPair || ownCardRankSum > 20)
+            if (hasPair || ownCardRankSum > 20 || ((raisingCards > 0) && ownCardRankSum > 14))
             {
                 return (int)gameState["current_buy_in"];
             }
             else
             {
-                if ((int)gameState["current_buy_in"] > 100)
+                if ((int)gameState["current_buy_in"] > (ownStack / 10))
                 {
                     return 0;
                 }
