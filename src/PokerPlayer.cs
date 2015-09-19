@@ -8,8 +8,10 @@ namespace Nancy.Simple
 
 		public static int BetRequest(JObject gameState)
 		{
-			//TODO: Use this method to return the value You want to bet
-			return 10000;
+            return (int)gameState["current_buy_in"] + (int)gameState["minimum_raise"];
+            //TODO: Use this method to return the value You want to bet
+
+            //return 10000;
 		}
 
 		public static void ShowDown(JObject gameState)
